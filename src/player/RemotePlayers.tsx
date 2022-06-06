@@ -1,5 +1,9 @@
+import * as THREE from "three";
 import { useHMSStore, selectPeers } from "@100mslive/react-sdk";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+
+let interpolatingPosition = new THREE.Vector3();
 
 type RemotePlayerProps = JSX.IntrinsicAttributes & {
   posX: number;
@@ -10,9 +14,52 @@ type RemotePlayerProps = JSX.IntrinsicAttributes & {
 
 const RemotePlayer = (props: RemotePlayerProps) => {
   const { posX, posY, posZ, color } = props;
+  const remoteModel = useRef<THREE.Mesh>();
   // console.log("remote player re-rendered");
+
+  const currentPosition = {
+    x: posX,
+    y: posY,
+    z: posZ,
+  };
+
+  useEffect(() => {
+    // initial render
+    if (remoteModel && remoteModel.current && !remoteModel?.current?.position) {
+      // @ts-ignore
+      remoteModel.current.position = currentPosition;
+    }
+  });
+
+  const lerpFactor = 0.04;
+
+  useFrame((_, delta: number) => {
+    if (remoteModel?.current && currentPosition) {
+      if (
+        remoteModel.current.position.x !== currentPosition.x ||
+        remoteModel.current.position.y !== currentPosition.y ||
+        remoteModel.current.position.z !== currentPosition.z
+      ) {
+        interpolatingPosition.set(
+          currentPosition.x,
+          currentPosition.y,
+          currentPosition.z
+        );
+        remoteModel.current.position.lerp(interpolatingPosition, lerpFactor);
+      }
+    }
+  });
+
   return (
-    <mesh position={[posX, posY, posZ]} scale={1}>
+    <mesh
+      ref={remoteModel}
+      position={
+        remoteModel?.current?.position
+          ? remoteModel.current.position
+          : [currentPosition.x, currentPosition.y, currentPosition.z]
+      }
+      scale={1}
+    >
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial color={color} />
     </mesh>

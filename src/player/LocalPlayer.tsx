@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import {
   useHMSActions,
@@ -33,11 +33,8 @@ export default function CubePlayer(props: PlayerProps) {
   const localPeerId = useHMSStore(selectLocalPeerID);
   const userMetaData = useHMSStore(selectPeerMetadata(localPeerId));
 
-  useFrame(() => {
-    if (forward || backward || left || right) {
-      movePlayer(ref, movement);
-      // console.log("sending data...");
-
+  useEffect(() => {
+    let interval = setInterval(() => {
       hmsActions.changeMetadata(
         JSON.stringify({
           ...userMetaData,
@@ -47,6 +44,13 @@ export default function CubePlayer(props: PlayerProps) {
           color: playerColor,
         })
       );
+    }, 200);
+    return () => clearInterval(interval);
+  });
+
+  useFrame(() => {
+    if (forward || backward || left || right) {
+      movePlayer(ref, movement);
     }
   });
 
