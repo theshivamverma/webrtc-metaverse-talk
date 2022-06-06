@@ -12,10 +12,10 @@ type RemotePlayerProps = JSX.IntrinsicAttributes & {
   color: string;
 };
 
-const RemotePlayer = (props: RemotePlayerProps) => {
+const RemotePlayer = React.memo((props: RemotePlayerProps) => {
   const { posX, posY, posZ, color } = props;
   const remoteModel = useRef<THREE.Mesh>();
-  // console.log("remote player re-rendered");
+  console.log("remote player re-rendered");
 
   const currentPosition = {
     x: posX,
@@ -64,7 +64,7 @@ const RemotePlayer = (props: RemotePlayerProps) => {
       <meshStandardMaterial color={color} />
     </mesh>
   );
-};
+});
 
 const RemotePlayers = () => {
   const peersData = useHMSStore(selectPeers);
