@@ -15,7 +15,7 @@ type RemotePlayerProps = JSX.IntrinsicAttributes & {
 const RemotePlayer = React.memo((props: RemotePlayerProps) => {
   const { posX, posY, posZ, color } = props;
   const remoteModel = useRef<THREE.Mesh>();
-  console.log("remote player re-rendered");
+  // console.log("remote player re-rendered");
 
   const currentPosition = {
     x: posX,
