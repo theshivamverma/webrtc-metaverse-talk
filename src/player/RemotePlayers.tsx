@@ -10,7 +10,7 @@ type RemotePlayerProps = JSX.IntrinsicAttributes & {
 
 const RemotePlayer = (props: RemotePlayerProps) => {
   const { posX, posY, posZ, color } = props;
-  console.log("remote player re-rendered");
+  // console.log("remote player re-rendered");
   return (
     <mesh position={[posX, posY, posZ]} scale={1}>
       <boxGeometry args={[1, 1, 1]} />
