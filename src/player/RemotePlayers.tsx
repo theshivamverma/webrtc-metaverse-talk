@@ -6,11 +6,13 @@ type RemotePlayerProps = JSX.IntrinsicAttributes & {
   posY: number;
   posZ: number;
   color: string;
+  name: string;
 };
 
 const RemotePlayer = (props: RemotePlayerProps) => {
-  const { posX, posY, posZ, color } = props;
-  // console.log("remote player re-rendered");
+  const { posX, posY, posZ, color, name } = props;
+  console.log("remote player re-rendered");
+  // console.log(`RemotePlayer: ${name} re-rendered`);
   return (
     <mesh position={[posX, posY, posZ]} scale={1}>
       <boxGeometry args={[1, 1, 1]} />
@@ -26,6 +28,7 @@ const RemotePlayers = () => {
     return peersData
       .filter((peer) => !peer.isLocal)
       .map((onePlayer, index) => {
+        const { name } = onePlayer;
         const { posX, posY, posZ, color } =
           onePlayer.metadata && onePlayer.metadata !== ""
             ? JSON.parse(onePlayer.metadata)
@@ -37,6 +40,7 @@ const RemotePlayers = () => {
             posY={posY}
             posZ={posZ}
             color={color}
+            name={name}
           />
         );
       });
