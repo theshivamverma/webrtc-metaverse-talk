@@ -12,6 +12,7 @@ import { WelcomeScreen } from "./components";
 import { useStore } from "./store";
 
 import "./App.css";
+import { useEffect } from "react";
 
 function Ground() {
   return (
@@ -34,20 +35,24 @@ export default function App() {
   const hmsActions = useHMSActions();
   hmsActions.setLogLevel(HMSLogLevel.NONE);
 
-  hmsActions.join({
-    authToken: process.env.REACT_APP_HMS_AUTH_TOKEN,
-    userName: playerName,
-    settings: {
-      isAudioMuted: true,
-      isVideoMuted: true,
-    },
-    metaData: JSON.stringify({
-      posX: 0,
-      posY: 0,
-      posZ: 0,
-      playerColor,
-    }),
-  });
+  useEffect(() => {
+    if (enterStatus) {
+      hmsActions.join({
+        authToken: process.env.REACT_APP_HMS_AUTH_TOKEN,
+        userName: playerName,
+        settings: {
+          isAudioMuted: true,
+          isVideoMuted: true,
+        },
+        metaData: JSON.stringify({
+          posX: 0,
+          posY: 0,
+          posZ: 0,
+          playerColor,
+        }),
+      });
+    }
+  }, [enterStatus]);
 
   return enterStatus ? (
     <Canvas>

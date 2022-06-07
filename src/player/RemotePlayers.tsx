@@ -10,12 +10,14 @@ type RemotePlayerProps = JSX.IntrinsicAttributes & {
   posY: number;
   posZ: number;
   color: string;
+  name: string;
 };
 
 const RemotePlayer = React.memo((props: RemotePlayerProps) => {
   const { posX, posY, posZ, color } = props;
   const remoteModel = useRef<THREE.Mesh>();
   // console.log("remote player re-rendered");
+  // console.log(`RemotePlayer: ${name} re-rendered`);
 
   const currentPosition = {
     x: posX,
@@ -73,6 +75,7 @@ const RemotePlayers = () => {
     return peersData
       .filter((peer) => !peer.isLocal)
       .map((onePlayer, index) => {
+        const { name } = onePlayer;
         const { posX, posY, posZ, color } =
           onePlayer.metadata && onePlayer.metadata !== ""
             ? JSON.parse(onePlayer.metadata)
@@ -84,6 +87,7 @@ const RemotePlayers = () => {
             posY={posY}
             posZ={posZ}
             color={color}
+            name={name}
           />
         );
       });
