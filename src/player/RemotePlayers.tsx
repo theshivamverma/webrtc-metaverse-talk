@@ -17,7 +17,7 @@ const RemotePlayer = React.memo((props: RemotePlayerProps) => {
   const { posX, posY, posZ, color, name } = props;
   const remoteModel = useRef<THREE.Mesh>();
   // console.log("remote player re-rendered");
-  console.log(`RemotePlayer: ${name} re-rendered`);
+  // console.log(`RemotePlayer: ${name} re-rendered`);
 
   const currentPosition = {
     x: posX,
